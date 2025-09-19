@@ -1,0 +1,68 @@
+create database fahren;
+use fahren;
+
+create table usuarios(
+id_usuario int(5) primary key auto_increment,
+    nome_usuario varchar(120),
+    email_usuario varchar(200),
+    senha_usuario varchar(256)
+);
+create table vendedor(
+id_vendedor int(10) primary key auto_increment not null,
+    email_vendedor varchar(200),
+    senha_vendedor varchar(256),
+    numero_vendedor int(15),
+    cep_vendedor int(8),
+    cpf_vendedor int(11),
+    rg_vendedor int(9),
+    avaliacao_vendedor int(5)
+);
+create table loja(
+id_loja int(10) primary key auto_increment not null,
+    email_loja varchar(200),
+    nome_loja varchar(100),
+    senha_loja varchar(256),
+    numero_loja int(15),
+    cnpj_loja varchar(14),
+    cidade_loja varchar(40),
+    estado_loja char(2),
+    avaliacao_loja int(5)
+);
+
+create table carros(
+id_carro int(12) primary key auto_increment,
+    estado_local char(2),
+    modelo_carro varchar(75),
+    marca_carro varchar(25),
+    versao_carro varchar(40),
+    carroceria_carro varchar(15),
+    preco_carro decimal(11,2),
+    quilometragem int(10),
+    ano_producao int(4),
+    ano_modelo int(4),
+    propulsao varchar(10),
+    combustivel varchar(20),
+    blindagem char(1) default '0',
+    id_vendedor_carro int(10),
+    fotos_carro blob,
+    leilao char(1),
+    foreign key(id_vendedor_carro) references loja(id_loja)
+);
+
+create table pagamento(
+id_pagamento int(12) primary key auto_increment,
+    preco_pagamento decimal(11,2),
+    nome_cliente varchar(255),
+    nome_vendedor varchar(255),
+    id_vendedor_pagamento int(10),
+    id_carro_pagamento int(12),
+    tipo_pagamento varchar(30),
+    id_cliente int(6),
+    data_pagamento datetime,
+    foreign key(preco_pagamento) references carros(preco_carro),
+    foreign key(id_vendedor_pagamento) references loja(id_loja),
+    foreign key(id_carro_pagamento) references carros(id_carro),
+    foreign key(id_cliente) references usuarios(id_usuario),
+    foreign key(nome_cliente) references usuarios(nome_usuario),
+    foreign key(nome_vendedor) references loja(nome_loja)
+);

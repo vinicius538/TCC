@@ -1,12 +1,17 @@
-create database fahren;
 use fahren;
 
-create table usuarios(
-id_usuario int(5) primary key auto_increment,
-    nome_usuario varchar(120),
-    email_usuario varchar(200),
-    senha_usuario varchar(256)
-);
+CREATE TABLE `usuarios` (
+  `id` int(6) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  `sobrenome` varchar(30) NOT NULL,
+  `telefone` bigint(15) DEFAULT NULL,
+  `cpf` char(11) DEFAULT NULL,
+  `email` varchar(120) NOT NULL,
+  `senha` varchar(256) NOT NULL,
+  `data_criacao_conta` datetime NOT NULL DEFAULT current_timestamp(),
+  `data_nascimento` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 create table vendedor(
 id_vendedor int(10) primary key auto_increment not null,
     email_vendedor varchar(200),
@@ -29,25 +34,40 @@ id_loja int(10) primary key auto_increment not null,
     avaliacao_loja int(5)
 );
 
-create table carros(
-id_carro int(12) primary key auto_increment,
-    estado_local char(2),
-    modelo_carro varchar(75),
-    marca_carro varchar(25),
-    versao_carro varchar(40),
-    carroceria_carro varchar(15),
-    preco_carro decimal(11,2),
-    quilometragem int(10),
-    ano_producao int(4),
-    ano_modelo int(4),
-    propulsao varchar(10),
-    combustivel varchar(20),
-    blindagem char(1) default '0',
-    id_vendedor_carro int(10),
-    fotos_carro blob,
-    leilao char(1),
-    foreign key(id_vendedor_carro) references loja(id_loja)
-);
+CREATE TABLE `anuncios_carros` (
+  `id` int(12) NOT NULL,
+  `estado_local` char(2) DEFAULT NULL,
+  `marca` varchar(25) DEFAULT NULL,
+  `modelo` varchar(75) DEFAULT NULL,
+  `versao` varchar(40) DEFAULT NULL,
+  `carroceria` varchar(15) DEFAULT NULL,
+  `preco` decimal(11,2) DEFAULT NULL,
+  `quilometragem` int(10) DEFAULT NULL,
+  `ano_fabricacao` int(4) DEFAULT NULL,
+  `ano_modelo` int(4) DEFAULT NULL,
+  `propulsao` varchar(10) DEFAULT NULL,
+  `combustivel` varchar(20) DEFAULT NULL,
+  `blindagem` char(1) DEFAULT '0',
+  `id_vendedor` int(10) DEFAULT NULL,
+  `imagens` varchar(255) DEFAULT NULL,
+  `leilao` char(1) DEFAULT NULL,
+  `portas_qtd` smallint(1) DEFAULT 4,
+  `acentos_qtd` smallint(1) DEFAULT 5,
+  `placa` char(7) DEFAULT NULL,
+  `data_criacao` datetime NOT NULL DEFAULT current_timestamp(),
+  `cor` varchar(10) NOT NULL,
+  `quant_proprietario` char(1) NOT NULL,
+  `revisao` char(1) NOT NULL,
+  `vistoria` char(1) NOT NULL,
+  `sinistro` char(1) NOT NULL,
+  `ipva` char(1) NOT NULL,
+  `licenciamento` char(1) NOT NULL,
+  `estado_conservacao` char(1) NOT NULL,
+  `uso_anterior` char(1) NOT NULL,
+  `aceita_troca` char(1) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `telefone` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 create table pagamento(
 id_pagamento int(12) primary key auto_increment,
@@ -61,7 +81,7 @@ id_pagamento int(12) primary key auto_increment,
     data_pagamento datetime,
     foreign key(preco_pagamento) references carros(preco_carro),
     foreign key(id_vendedor_pagamento) references loja(id_loja),
-    foreign key(id_carro_pagamento) references carros(id_carro),
+    foreign key(id_carro_pagamento) references anuncios_carros(id),
     foreign key(id_cliente) references usuarios(id_usuario),
     foreign key(nome_cliente) references usuarios(nome_usuario),
     foreign key(nome_vendedor) references loja(nome_loja)
